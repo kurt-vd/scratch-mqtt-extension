@@ -32,7 +32,7 @@
   function MQTTconnect() {
 
     if (typeof path == "undefined") {
-      path = '/mqtt';
+      path = '';
       console.log("path=" + path);
     };
 
