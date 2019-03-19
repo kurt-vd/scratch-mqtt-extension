@@ -18,10 +18,10 @@
   var messagePayload = '';
   var messageQueue = [];
 
-  host = 'test.mosquitto.org';
-  port = 8081;
-  topic = '/scratchExtensionTopic';		// topic to subscribe to
-  useTLS = true;
+  host = 'server';
+  port = 1883;
+  topic = 'scratch';		// topic to subscribe to
+  useTLS = false;
   username = null;
   password = null;
   cleansession = true;
