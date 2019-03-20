@@ -16,6 +16,7 @@
   var mqtt;
   var reconnectTimeout = 2000;
   var messagePayload = '';
+  var messageTopic = '';
   var messageQueue = [];
 
   host = 'server';
@@ -69,7 +70,7 @@
 
     function onMessageArrived(message) {
         console.log("message arrived " + message.payloadString);
-        messageQueue.push(message.payloadString);
+        messageQueue.push(message);
     };
 
     function onConnect() {
@@ -123,9 +124,12 @@
       };
     };
 
-    ext.get_message = function() {
-      return messagePayload;
-    }
+	ext.get_message = function() {
+		return messagePayload;
+	}
+	ext.get_topic = function() {
+		return messageTopic;
+	}
 
     ext.send_message = function(message) {
       //console.log("trying to published message");
@@ -133,22 +137,32 @@
       console.log("message published");
     };
 
-    ext.message_arrived = function() {
-       // Reset alarm_went_off if it is true, and return true
-       // otherwise, return false
-       if (messageQueue.length > 0) {
-           messagePayload  = messageQueue.shift();
-           return true;
-       }
-       return false;
-    };
+	ext.message_arrived = function() {
+		// Reset alarm_went_off if it is true, and return true
+		// otherwise, return false
+		if (messageQueue.length > 0) {
+			msg  = messageQueue.shift();
+			messagePayload = msg.payloadString;
+			messageTopic = msg.topicString;
+			return true;
+		}
+		return false;
+	};
+
+	ext.send = function(topic, payload) {
+		//console.log("trying to published message");
+		mqtt.send(topic, payload);
+		console.log("message published");
+	};
 
 
     // Block and block menu descriptions
     var descriptor = {
         blocks: [
             [' ', 'send message %s', 'send_message', 'message'],
+            [' ', 'send %s %n', 'send', 'topic', 0],
             ['r', 'message', 'get_message'],
+            ['r', 'topic', 'get_topic'],
             ['h', 'when message arrived', 'message_arrived'],
             [' ', 'secure connection  %m.secureConnection', 'set_TLS', 'true'],
             [' ', 'Host %s', 'set_host', 'test.mosquitto.org'],
@@ -158,9 +172,10 @@
         ],
         menus: {
             secureConnection: ['true', 'false'],
+            lamp: ['nina', 'zetel', 'eettafel'],
         },
     };
 
     // Register the extension
-    ScratchExtensions.register('Alarm extension', descriptor, ext);
+    ScratchExtensions.register('MQTT extension', descriptor, ext);
 })({});
