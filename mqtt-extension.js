@@ -154,6 +154,7 @@
         blocks: [
             [' ', 'send message %s', 'send_message', 'message'],
             [' ', 'send %s %n', 'send', 'topic', 0],
+            [' ', 'send %s %s', 'send', 'topic', ''],
             ['r', 'message', 'get_message'],
             ['r', 'topic', 'get_topic'],
             ['h', 'when message arrived', 'message_arrived'],
