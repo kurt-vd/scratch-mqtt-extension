@@ -31,6 +31,7 @@
 
 
   function MQTTconnect() {
+    console.log("try to connect to " + host);
 
     if (typeof path == "undefined") {
       path = '';
