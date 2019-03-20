@@ -139,24 +139,26 @@
 		if (messageQueue.length > 0) {
 			msg  = messageQueue.shift();
 			messagePayload = msg.payloadString;
-			messageTopic = msg.DestinationName;
+			messageTopic = msg.destinationName;
 			return true;
 		}
 		return false;
 	};
 
+	/*
 	ext.send = function(topic, payload) {
 		//console.log("trying to published message");
 		mqtt.send(topic, payload);
 		console.log("message published");
 	};
+	*/
 
 
     // Block and block menu descriptions
     var descriptor = {
         blocks: [
             [' ', 'send message %s', 'send_message', 'message'],
-            [' ', 'send %s %n', 'send', 'topic', 0],
+         //   [' ', 'send %s %n', 'send', 'topic', 0],
             ['r', 'message', 'get_message'],
             ['r', 'topic', 'get_topic'],
             ['h', 'when message arrived', 'message_arrived'],
