@@ -143,7 +143,7 @@
 		if (messageQueue.length > 0) {
 			msg  = messageQueue.shift();
 			messagePayload = msg.payloadString;
-			messageTopic = msg.topicString;
+			messageTopic = msg.DestinationName;
 			return true;
 		}
 		return false;
