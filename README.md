@@ -18,4 +18,5 @@ secure: yes
 
 ## link
 
-kurt-vd.github.io/mqtt_extension/mqtt_extension.js
+kurt-vd.github.io/scratch-mqtt-extension/mqtt-extension.js
+http://scratchx.org/?url=https://kurt-vd.github.io/scratch-mqtt-extension/mqtt-extension.js#scratch
