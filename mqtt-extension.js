@@ -42,6 +42,7 @@
     mqtt = new Paho.MQTT.Client(
       host,
       port,
+      path,
       "web_" + parseInt(Math.random() * 100, 10)
     );
 
@@ -174,6 +175,7 @@
         menus: {
             secureConnection: ['true', 'false']
         },
+	url: 'https://github.com/kurt-vd/scratch-mqtt-extension'
     };
 
     // Register the extension
