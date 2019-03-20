@@ -144,7 +144,7 @@
 	};
 
 	ext.send = function(topic, payload) {
-		console.log("publish '"+topic+"'='" + payload"'");
+		console.log("publish '" + topic + "'='" + payload + "'");
 		mqtt.send(topic, ''+payload);
 	};
 
