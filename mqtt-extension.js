@@ -168,11 +168,10 @@
             [' ', 'Host %s', 'set_host', 'test.mosquitto.org'],
             [' ', 'Topic %s', 'set_topic', '/scratchExtensionTopic'],
             [' ', 'Port %n', 'set_port', 8081],
-            [' ', 'connect', 'connect'],
+            [' ', 'connect', 'connect']
         ],
         menus: {
-            secureConnection: ['true', 'false'],
-            lamp: ['nina', 'zetel', 'eettafel'],
+            secureConnection: ['true', 'false']
         },
     };
 
