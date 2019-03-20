@@ -170,8 +170,7 @@
         ],
         menus: {
             secureConnection: ['true', 'false']
-        },
-	url: 'https://github.com/kurt-vd/scratch-mqtt-extension'
+        }
     };
 
     // Register the extension
