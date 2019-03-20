@@ -144,9 +144,8 @@
 	};
 
 	ext.send = function(topic, payload) {
-		//console.log("trying to published message");
-		mqtt.send(topic, payload);
-		console.log("message published");
+		console.log("publish '"+topic+"'='" + payload"'");
+		mqtt.send(topic, ''+payload);
 	};
 
 
