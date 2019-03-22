@@ -3,7 +3,7 @@
 
 (function(ext) {
 
-  $.getScript("https://code.jquery.com/jquery-1.12.4.js", function(){ console.log("jquery.js direct loaded"); });
+  //$.getScript("https://code.jquery.com/jquery-1.12.4.js", function(){ console.log("jquery.js direct loaded"); });
   $.getScript("https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js", function(){ console.log("mqttws31.js direct loaded"); });
   console.log( "another log" ); // 200
 
