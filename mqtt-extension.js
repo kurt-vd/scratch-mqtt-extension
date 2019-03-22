@@ -4,7 +4,7 @@
 (function(ext) {
 
   $.getScript("https://kurt-vd.github.io/scratch-mqtt-extension/mqttws31.js", function(){ console.log("mqttws31.js direct loaded"); });
-  $.getScript("https://kurt-vd.github.io/scratch-mqtt-extension/jquery.min.js", function(){});
+  $.getScript("https://kurt-vd.github.io/scratch-mqtt-extension/jquery.min.js", function(){ console.log("jquery.min.js direct loaded"); });
   console.log( "another log" ); // 200
 
   var mqtt;
