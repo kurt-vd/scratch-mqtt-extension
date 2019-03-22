@@ -12,7 +12,7 @@
   var messagePayload = '';
   var messageTopic = '';
   var messageQueue = [];
-  var msgq = {};
+  var msgq = [];
 
   host = 'server';
   port = 1883;
@@ -63,14 +63,12 @@
 	var topic = message.destinationName;
 
 	console.log("recv topic " + topic);
-	msgq.topic.q.push(message.payloadString);
+	msgq[topic].q.push(message.payloadString);
     };
 
     function onConnect() {
         console.log("connected");
         $('#status').val('Connected to ' + host + ':' + port);
-	/* clear queue */
-	msgq = {};
     };
 
 
@@ -101,17 +99,17 @@
 
 	ext.mqtt_recv = function(topic)
 	{
-		return msgq.topic.head;
+		return msgq[topic].head;
 	}
 	ext.mqtt_recvd = function(topic)
 	{
-		if (typeof msgq.topic == 'undefined') {
-			console.log("subscribe " + topic);
+		if (typeof msgq[topic] == 'undefined') {
+			console.log("new topic " + topic);
 			mqtt.subscribe(topic, {qos: 0});
-			msgq.topic = { q: []};
+			msgq[topic] = {subscribed: true, q: []};
 		}
-		if (msgq.topic.q.length > 0) {
-			msqq.topic.head = msgq.topic.q.shift();
+		if (msgq[topic].q.length > 0) {
+			msqq[topic].head = msgq[topic].q.shift();
 			return true;
 		}
 		return false;
