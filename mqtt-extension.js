@@ -9,9 +9,6 @@
 
   var mqtt;
   var reconnectTimeout = 10000;
-  var messagePayload = '';
-  var messageTopic = '';
-  var messageQueue = [];
   var msgq = [];
 
   host = 'server';
@@ -69,6 +66,8 @@
     function onConnect() {
         console.log("connected");
         $('#status').val('Connected to ' + host + ':' + port);
+	// clear object buffers
+	msgq = [];
     };
 
 
