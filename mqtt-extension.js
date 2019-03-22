@@ -12,7 +12,7 @@
   var messagePayload = '';
   var messageTopic = '';
   var messageQueue = [];
-  var msgq [];
+  var msgq = [];
 
   host = 'server';
   port = 1883;
