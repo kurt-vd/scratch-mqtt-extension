@@ -9,7 +9,7 @@
 
 	var mqtt;
 	var reconnectTimeout = 10000;
-	var msgq = [];
+	var objs = [];
 
 	host = 'server';
 	port = 1883;
@@ -59,7 +59,7 @@
 		console.log("connected");
 		$('#status').val('Connected to ' + host + ':' + port);
 		// clear object buffers
-		msgq = [];
+		objs = [];
 	};
 
 
@@ -93,26 +93,34 @@
 	{
 		var topic = message.destinationName;
 
-		msgq[topic].q.push(message.payloadString);
+		objs[topic].value = message.payloadString;
+		objs[topic].recvd = true;
+	}
+
+	function test_subscribed(topic)
+	{
+		if (typeof objs[topic] == 'undefined') {
+			console.log("subscribe " + topic);
+			objs[topic] = { recvd: false };
+			mqtt.subscribe(topic, {qos: 0});
+		}
 	}
 
 	ext.mqtt_recv = function(topic)
 	{
-		return msgq[topic].head;
+		test_subscribed(topic);
+
+		return objs[topic].value;
 	};
 
 	ext.mqtt_recvd = function(topic)
 	{
-		if (typeof msgq[topic] == 'undefined') {
-			console.log("subscribe " + topic);
-			msgq[topic] = { head: null, q: []};
-			mqtt.subscribe(topic, {qos: 0});
-		}
-		if (msgq[topic].q.length > 0) {
-			msgq[topic].head = msgq[topic].q.shift();
-			return true;
-		}
-		return false;
+		test_subscribed(topic);
+
+		var result = objs[topic].recvd;
+		objs[topic].recvd = false;
+
+		return result;
 	};
 
 	ext.mqtt_send = function(topic, payload)
