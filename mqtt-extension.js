@@ -36,7 +36,7 @@
     );
 
     var options = {
-      timeout: 3,
+      timeout: 10,
       useSSL: useTLS,
       cleanSession: cleansession,
       onSuccess: onConnect,
@@ -108,7 +108,7 @@
 		useTLS = _tls == "true";
 
 		MQTTconnect();
-	};
+	}
 
 	ext.mqtt_recv = function(topic)
 	{
