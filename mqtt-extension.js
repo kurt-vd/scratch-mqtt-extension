@@ -8,7 +8,7 @@
   console.log( "another log" ); // 200
 
   var mqtt;
-  var reconnectTimeout = 2000;
+  var reconnectTimeout = 10000;
   var messagePayload = '';
   var messageTopic = '';
   var messageQueue = [];
