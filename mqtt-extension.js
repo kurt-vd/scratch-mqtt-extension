@@ -3,8 +3,8 @@
 
 (function(ext) {
 
-  $.getScript("https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.js", function(){});
-  $.getScript("https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js", function(){});
+  $.getScript("mqttws31.js", function(){});
+  $.getScript("jquery.min.js", function(){});
   console.log( "another log" ); // 200
 
   var mqtt;
