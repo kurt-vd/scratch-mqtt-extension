@@ -57,19 +57,12 @@
   }
 
 
-    function new_topic(topic)
-    {
-	    mqtt.subscribe(topic, {qos: 0});
-	    msgq[topic] = {subscribed: true, q: []};
-    }
-
     function onMessageArrived(message) {
         //console.log("message arrived " + message.payloadString);
         //messageQueue.push(message);
 	var topic = message.destinationName;
 
-	if (!msgq[topic].subscribed)
-		new_topic(topic);
+	console.log("recv topic " + topic);
 	msgq[topic].q.push(message.payloadString);
     };
 
@@ -110,8 +103,11 @@
 	}
 	ext.mqtt_recvd = function(topic)
 	{
-		if (msgq[topic].subscribed)
-			new_topic(topic);
+		if (!msgq[topic].subscribed) {
+			console.log("new topic " + topic);
+			mqtt.subscribe(topic, {qos: 0});
+			msgq[topic] = {subscribed: true, q: []};
+		}
 		if (msgq[topic].q.length > 0) {
 			msqq[topic].head = msgq[topic].q.shift();
 			return true;
