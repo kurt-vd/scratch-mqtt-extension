@@ -16,7 +16,6 @@
 
   host = 'server';
   port = 1883;
-  path = '';
   useTLS = false;
   username = null;
   password = null;
@@ -26,12 +25,12 @@
 
 
   function MQTTconnect() {
-    console.log("connect to "+ host + ":" + port + path + " TLS = " + useTLS + " user=" + username + " pwd=" + password);
+    console.log("connect to "+ host + ":" + port + " TLS = " + useTLS + " user=" + username + " pwd=" + password);
 
     mqtt = new Paho.MQTT.Client(
       host,
       port,
-      path,
+      '',
       "web_" + parseInt(Math.random() * 100, 10)
     );
 
@@ -76,7 +75,7 @@
 
     function onConnect() {
         console.log("connected");
-        $('#status').val('Connected to ' + host + ':' + port + path);
+        $('#status').val('Connected to ' + host + ':' + port);
         // Connection succeeded; subscribe to our topic
         mqtt.subscribe(topic, {qos: 0});
         $('#topic').val(topic);
@@ -100,12 +99,11 @@
         return {status: 2, msg: 'Ready'};
     };
 
-	ext.mqtt_connect = function(_host, _port, _path, _tls)
+	ext.mqtt_connect = function(_host, _port, _tls)
 	{
 		host = _host;
 		port = _port;
-		path = _path;
-		useTLS = _tls == "true";
+		useTLS = _tls;
 
 		MQTTconnect();
 	}
@@ -139,7 +137,7 @@
             ['r', 'mqtt message %s', 'mqtt_recv', 'topic'],
             ['h', 'when mqtt %s arrived', 'mqtt_recvd', 'topic'],
 
-            [' ', 'connect %s : %n / %s tls %m.secureConnection', 'mqtt_connect', 'test.mosquitto.org', 8081, '', true]
+            [' ', 'connect %s : %n tls %m.secureConnection', 'mqtt_connect', 'test.mosquitto.org', 8081, true]
         ],
         menus: {
             secureConnection: ['true', 'false']
