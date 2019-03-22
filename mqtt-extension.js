@@ -59,8 +59,9 @@
         //messageQueue.push(message);
 	var topic = message.destinationName;
 
-	console.log("recv topic " + topic);
 	msgq[topic].q.push(message.payloadString);
+	console.log("recv topic " + topic + " = " + message.payloadString + ", " + msgq[topic].q.length);
+
     };
 
     function onConnect() {
@@ -108,7 +109,7 @@
 			mqtt.subscribe(topic, {qos: 0});
 		}
 		if (msgq[topic].q.length > 0) {
-			msqq[topic].head = msgq[topic].q.shift();
+			msgq[topic].head = msgq[topic].q.shift();
 			return true;
 		}
 		return false;
