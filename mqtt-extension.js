@@ -76,10 +76,6 @@
     function onConnect() {
         console.log("connected");
         $('#status').val('Connected to ' + host + ':' + port);
-        // Connection succeeded; subscribe to our topic
-        mqtt.subscribe(topic, {qos: 0});
-        $('#topic').val(topic);
-
     };
 
 
