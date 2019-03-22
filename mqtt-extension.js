@@ -12,10 +12,11 @@
   var messagePayload = '';
   var messageTopic = '';
   var messageQueue = [];
+  var msgq [];
 
   host = 'server';
   port = 1883;
-  topic = 'scratch';		// topic to subscribe to
+  path = '';
   useTLS = false;
   username = null;
   password = null;
@@ -26,10 +27,6 @@
 
   function MQTTconnect() {
     console.log("try to connect to " + host);
-
-    if (typeof path == "undefined") {
-      path = '';
-    }
 
     mqtt = new Paho.MQTT.Client(
       host,
@@ -44,10 +41,10 @@
       cleanSession: cleansession,
       onSuccess: onConnect,
       onFailure: function (message) {
-          $('#status').val("Connection failed: " + message.errorMessage + "Retrying");
-          setTimeout(MQTTconnect, reconnectTimeout);
-    }
-  };
+	      $('#status').val("Connection failed: " + message.errorMessage + "Retrying");
+	      setTimeout(MQTTconnect, reconnectTimeout);
+      }
+    };
 
     mqtt.onConnectionLost = onConnectionLost;
     mqtt.onMessageArrived = onMessageArrived;
@@ -61,14 +58,24 @@
   }
 
 
+    function new_topic(topic)
+    {
+	    mqtt.subscribe(topic, {qos: 0});
+	    msgq[topic] = {subscribed: true, q = []};
+    }
 
     function onMessageArrived(message) {
-        console.log("message arrived " + message.payloadString);
-        messageQueue.push(message);
+        //console.log("message arrived " + message.payloadString);
+        //messageQueue.push(message);
+	var topic = message.destinationName;
+
+	if (!msgq[topic].subscribed)
+		new_topic(topic);
+	msgq[topic].q.push(message.payloadString);
     };
 
     function onConnect() {
-        console.log("trying to connect");
+        console.log("connected");
         $('#status').val('Connected to ' + host + ':' + port + path);
         // Connection succeeded; subscribe to our topic
         mqtt.subscribe(topic, {qos: 0});
@@ -78,6 +85,7 @@
 
 
     function onConnectionLost(response) {
+        console.log("connection lost");
         setTimeout(MQTTconnect, reconnectTimeout);
         $('#status').val("connection lost: " + response.errorMessage + ". Reconnecting");
     };
@@ -92,58 +100,32 @@
         return {status: 2, msg: 'Ready'};
     };
 
-    ext.set_url = function(_host) {
-      host = _host;
-    };
+	ext.mqtt_connect = function(_host, _port, _path, _tls)
+	{
+		host = _host;
+		port = _port;
+		path = _path;
+		useTLS = _tls == "true";
 
-    ext.set_topic = function(_topic) {
-      topic = _topic;
-    };
+		MQTTconnect();
+	};
 
-    ext.set_port = function(_port) {
-      port = _port;
-    };
-
-
-    ext.connect = function() {
-      MQTTconnect();
-    };
-
-    ext.set_TLS = function(_useTLS) {
-      if ( _useTLS == "true") {
-        useTLS = true;
-      };
-      if ( _useTLS == "false") {
-        useTLS = false;
-      };
-    };
-
-	ext.get_message = function() {
-		return messagePayload;
+	ext.mqtt_recv = function(topic)
+	{
+		return msgq[topic].head;
 	}
-	ext.get_topic = function() {
-		return messageTopic;
-	}
-
-    ext.send_message = function(message) {
-      //console.log("trying to published message");
-      mqtt.send(topic, message);
-      console.log("message published");
-    };
-
-	ext.message_arrived = function() {
-		// Reset alarm_went_off if it is true, and return true
-		// otherwise, return false
-		if (messageQueue.length > 0) {
-			msg  = messageQueue.shift();
-			messagePayload = msg.payloadString;
-			messageTopic = msg.destinationName;
+	ext.mqtt_recvd = function(topic)
+	{
+		if (msgq[topic].subscribed)
+			new_topic(topic);
+		if (msgq[topic].q.length > 0) {
+			msqq[topic].head = msgq[topic].q.shift();
 			return true;
 		}
 		return false;
 	};
 
-	ext.send = function(topic, payload) {
+	ext.mqtt_send = function(topic, payload) {
 		console.log("publish '" + topic + "'='" + payload + "'");
 		mqtt.send(topic, ''+payload);
 	};
@@ -152,17 +134,12 @@
     // Block and block menu descriptions
     var descriptor = {
         blocks: [
-            [' ', 'send message %s', 'send_message', 'message'],
-            [' ', 'send %s %n', 'send', 'topic', 0],
-            [' ', 'send %s %s', 'send', 'topic', ''],
-            ['r', 'message', 'get_message'],
-            ['r', 'topic', 'get_topic'],
-            ['h', 'when message arrived', 'message_arrived'],
-            [' ', 'secure connection  %m.secureConnection', 'set_TLS', 'true'],
-            [' ', 'Host %s', 'set_host', 'test.mosquitto.org'],
-            [' ', 'Topic %s', 'set_topic', '/scratchExtensionTopic'],
-            [' ', 'Port %n', 'set_port', 8081],
-            [' ', 'connect', 'connect']
+            [' ', 'mqtt send %s %n', 'mqtt_send', 'topic', 0],
+            [' ', 'mqtt send %s %s', 'mqtt_send', 'topic', ''],
+            ['r', 'mqtt message %s', 'mqtt_recv', 'topic'],
+            ['h', 'when mqtt %s arrived', 'mqtt_recvd', 'topic'],
+
+            [' ', 'connect %s : %n / %s tls %m.secureConnection', 'mqtt_connect', 'test.mosquitto.org', 8081, '', true]
         ],
         menus: {
             secureConnection: ['true', 'false']
