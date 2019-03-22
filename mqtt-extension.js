@@ -103,6 +103,7 @@
 	}
 	ext.mqtt_recvd = function(topic)
 	{
+		console.log("recvd? " + topic);
 		if (!msgq[topic].subscribed) {
 			console.log("new topic " + topic);
 			mqtt.subscribe(topic, {qos: 0});
