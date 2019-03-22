@@ -61,7 +61,7 @@
     function new_topic(topic)
     {
 	    mqtt.subscribe(topic, {qos: 0});
-	    msgq[topic] = {subscribed: true, q = []};
+	    msgq[topic] = {subscribed: true, q: []};
     }
 
     function onMessageArrived(message) {
