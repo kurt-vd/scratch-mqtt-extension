@@ -3,7 +3,7 @@
 
 (function(ext) {
 
-  $.getScript("http://scratchx.org/?url=https://kurt-vd.github.io/scratch-mqtt-extension/mqttws31.js", function(){});
+  $.getScript("http://scratchx.org/?url=https://kurt-vd.github.io/scratch-mqtt-extension/mqttws31.js", function(){ console.log("mqttws31.js loaded"); });
   $.getScript("http://scratchx.org/?url=https://kurt-vd.github.io/scratch-mqtt-extension/jquery.min.js", function(){});
   console.log( "another log" ); // 200
 
