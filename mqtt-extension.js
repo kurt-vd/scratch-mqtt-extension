@@ -104,8 +104,8 @@
 	{
 		if (typeof msgq[topic] == 'undefined') {
 			console.log("new topic " + topic);
+			msgq[topic] = { head: null, q: []};
 			mqtt.subscribe(topic, {qos: 0});
-			msgq[topic] = {subscribed: true, q: []};
 		}
 		if (msgq[topic].q.length > 0) {
 			msqq[topic].head = msgq[topic].q.shift();
