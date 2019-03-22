@@ -104,7 +104,7 @@
 	ext.mqtt_recvd = function(topic)
 	{
 		if (typeof msgq[topic] == 'undefined') {
-			console.log("new topic " + topic);
+			console.log("subscribe " + topic);
 			msgq[topic] = { head: null, q: []};
 			mqtt.subscribe(topic, {qos: 0});
 		}
