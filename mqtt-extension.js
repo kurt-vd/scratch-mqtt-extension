@@ -60,8 +60,6 @@
 	var topic = message.destinationName;
 
 	msgq[topic].q.push(message.payloadString);
-	console.log("recv topic " + topic + " = " + message.payloadString + ", " + msgq[topic].q.length);
-
     };
 
     function onConnect() {
@@ -116,7 +114,7 @@
 	};
 
 	ext.mqtt_send = function(topic, payload) {
-		console.log("publish '" + topic + "'='" + payload + "'");
+		//console.log("publish '" + topic + "'='" + payload + "'");
 		mqtt.send(topic, ''+payload);
 	};
 
