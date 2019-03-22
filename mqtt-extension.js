@@ -99,7 +99,7 @@
 	{
 		host = _host;
 		port = _port;
-		useTLS = _tls;
+		useTLS = _tls == "true";
 
 		MQTTconnect();
 	}
