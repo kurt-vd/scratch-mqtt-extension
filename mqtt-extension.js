@@ -3,8 +3,8 @@
 
 (function(ext) {
 
-  $.getScript("https://kurt-vd.github.io/scratch-mqtt-extension/mqttws31.js", function(){});
-  $.getScript("https://kurt-vd.github.io/scratch-mqtt-extension/jquery.min.js", function(){});
+  $.getScript("mqttws31.js", function(){});
+  $.getScript("jquery.min.js", function(){});
   console.log( "another log" ); // 200
 
   var mqtt;
