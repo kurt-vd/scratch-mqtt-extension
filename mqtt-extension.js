@@ -23,6 +23,7 @@
 
 	function MQTTconnect()
 	{
+		connect_event = true;
 		console.log("connect to "+ host + ":" + port + " TLS = " + useTLS + " user=" + username + " pwd=" + password);
 
 		mqtt = new Paho.MQTT.Client(
@@ -60,6 +61,7 @@
 		$('#status').val('Connected to ' + host + ':' + port);
 		// clear object buffers
 		objs = [];
+		connect_event = true;
 	};
 
 
@@ -68,6 +70,7 @@
 		console.log("connection lost");
 		setTimeout(MQTTconnect, reconnectTimeout);
 		$('#status').val("connection lost: " + response.errorMessage + ". Reconnecting");
+		connect_event = true;
 	}
 
 	// Cleanup function when the extension is unloaded
@@ -97,6 +100,13 @@
 	ext.mqtt_connected = function()
 	{
 		return mqtt.isConnected();
+	};
+
+	ext.mqtt_connect_event = function(topic)
+	{
+		var result = connect_event;
+		connect_event = false;
+		return result;
 	};
 
 	function onMessageArrived(message)
@@ -150,6 +160,7 @@
 			[' ', 'mqtt connect %s : %n tls %m.secureConnection', 'mqtt_connect', 'test.mosquitto.org', 8081, true],
 			[' ', 'mqtt disconnect', 'mqtt_disconnect' ],
 			['b', 'mqtt connected', 'mqtt_connected' ],
+			['h', 'when mqtt connection changed', 'mqtt_connect_event'],
 		],
 		menus: {
 			secureConnection: ['true', 'false']
