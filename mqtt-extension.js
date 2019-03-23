@@ -89,6 +89,16 @@
 		MQTTconnect();
 	};
 
+	ext.mqtt_disconnect = function()
+	{
+		mqtt.disconnect();
+	};
+
+	ext.mqtt_connected = function()
+	{
+		return mqtt.isConnected();
+	};
+
 	function onMessageArrived(message)
 	{
 		var topic = message.destinationName;
@@ -133,12 +143,13 @@
 	// Block and block menu descriptions
 	var descriptor = {
 		blocks: [
-			[' ', 'mqtt send %s %n', 'mqtt_send', 'topic', 0],
 			[' ', 'mqtt send %s %s', 'mqtt_send', 'topic', ''],
 			['r', 'mqtt message %s', 'mqtt_recv', 'topic'],
 			['h', 'when mqtt %s arrived', 'mqtt_recvd', 'topic'],
 
-			[' ', 'connect %s : %n tls %m.secureConnection', 'mqtt_connect', 'test.mosquitto.org', 8081, true]
+			[' ', 'connect %s : %n tls %m.secureConnection', 'mqtt_connect', 'test.mosquitto.org', 8081, true],
+			[' ', 'disconnect', 'mqtt_disconnect' ],
+			['b', 'connected', 'mqtt_connected' ],
 		],
 		menus: {
 			secureConnection: ['true', 'false']
