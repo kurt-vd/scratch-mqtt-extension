@@ -147,9 +147,9 @@
 			['r', 'mqtt message %s', 'mqtt_recv', 'topic'],
 			['h', 'when mqtt %s arrived', 'mqtt_recvd', 'topic'],
 
-			[' ', 'connect %s : %n tls %m.secureConnection', 'mqtt_connect', 'test.mosquitto.org', 8081, true],
-			[' ', 'disconnect', 'mqtt_disconnect' ],
-			['b', 'connected', 'mqtt_connected' ],
+			[' ', 'mqtt connect %s : %n tls %m.secureConnection', 'mqtt_connect', 'test.mosquitto.org', 8081, true],
+			[' ', 'mqtt disconnect', 'mqtt_disconnect' ],
+			['b', 'mqtt connected', 'mqtt_connected' ],
 		],
 		menus: {
 			secureConnection: ['true', 'false']
